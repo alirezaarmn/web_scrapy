@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!--Bootstrap CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity= "sha384-ggOyROiXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<title> Hello, world!</title>
+</head> 
+<body>
+<center>
+  <h1>Scraping Stuff</h1>
+  <p>This site scrapes. That's what it does!</p>
+  <button class="btn btn-success" type="submit">Button</button>
+  <p>Wikipedia</p>
+  <p>{{data}}</p>
+  
+  <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Rank</th>
+      <th scope="col">Name</th>
+      <th scope="col">Revenue</th>
+    </tr>
+  </thead>
+  <tbody>
+  
+{% for element in data %}
+  <tr>
+    <th scope="row"></th>
+    <th>{{element[0]}}</th>
+    <th>{{element[1]}}</th>
+    <th>{{element[2]}}</th>
+  </tr>
+  {% endfor %}
+  
+  </tbody>
+  ‹/table>
+</center>
+</body>
+</html>
