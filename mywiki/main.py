@@ -3,8 +3,6 @@
 #--- set webhook: 
 #       https://api.telegram.org/bot6546517474:AAHBVAesenlhwFL_altk4E-dqwO6xtqh40k/setWebhook?url=https://0e67e13920a0256c617b52a8b15a6eb8.serveo.net
 
-# TODO: make the scap_wiki a class 
-# TODO: get an instance class of scrap_wiki
 # TODO: provide button for the categories
 
 from flask import Flask
@@ -12,6 +10,8 @@ from flask import request
 from flask import Response
 import requests
 import json
+
+from scrap_wiki import scrap
 
 app = Flask(__name__)
 
@@ -43,6 +43,8 @@ def index():
         # write_json(msg, 'telgram_logs.json')
         return Response('ok', status=200)
     else:
+        sample = scrap()
+        print(sample.getCategories())
         return '<h1> My Wiki Bot</h1>'
 
 if __name__ == '__main__':
