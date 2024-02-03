@@ -28,6 +28,12 @@ def sendWelcome(chatId):
     url = "https://api.telegram.org/bot" + TOKEN + "/sendMessage"
     data = {'chat_id': chatId, 'text': txt_welcome, 'parse_mode': 'HTML',
     'reply_markup': '{"inline_keyboard": [[%s,%s]]}' % (btn_saayi, btn_hovize)}
+
+
+    url = "https://api.telegram.org/bot" + TOKEN + "/setMyCommands"
+    data = {'commands': [{'command': "prueba", 'description': "Esto es una prueba"}],
+    'scope': {type: "all_group_chats"}}
+
     r = requests.post(url, data=data)
     print(r.text)
 
