@@ -47,8 +47,10 @@ def sendMenu():
     r = requests.post(url, data=data)
     print(r.text)
 
-def sendHome(command):
-    print(command)
+def sendHome(chatId, html_page):
+    url = wiki_url + "/sendMessage"
+    data = {'chat_id': chatId, "text": "%s!\n%s"%(html_page)}
+    r = requests.post(url, data=data)
 
 @app.route('/', methods=['POST', 'GET'])
 def index():
@@ -62,11 +64,12 @@ def index():
                 sendMenu()
                 sendWelcome(chat_id, first_name)
             if raw_json["message"]["text"] == '/h':
-                wiki_scrapper.scrapPage('/h'.lstrip('/'))
-                sendHome('home page is sending to bot')
+                html_page = wiki_scrapper.scrapPage('/h'.lstrip('/'))
+                sendHome(chatId=chat_id, html_page=html_page)
 
         return Response('ok', status=200)
     else:
+        return wiki_scrapper.scrapPage('/h'.lstrip('/'))
         return '<h1> My Wiki Bot</h1>'
 
 if __name__ == '__main__':

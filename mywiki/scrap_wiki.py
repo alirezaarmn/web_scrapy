@@ -32,7 +32,7 @@ class Scrapper:
         for item in matches:
             self.categories[item.text[0].lower()] = (item.text, item.get_attribute("href"))
 
-        self.driver.quit()
+        # self.driver.quit()
     
     def getCategories(self):
         """
@@ -43,8 +43,12 @@ class Scrapper:
         return self.categories
     
     def scrapPage(self, command):
+        """
+        Retrieve the corresponding page of the command and scrape the page.
+        """
         url = self.categories[command][1]
-        print(url)
-        # left_panel_explicit = WebDriverWait(self.driver, timeout=10).until(EC.presence_of_element_located((By.XPATH, '//div[contains(@class,"contents")]')))
-        # print(left_panel_explicit)
-        # self.driver.get(url)
+        self.driver.get(url)
+        left_panel_explicit = WebDriverWait(self.driver, timeout=10).until(EC.presence_of_element_located((By.XPATH, '//div[contains(@class,"contents")]'))).get_attribute("outerHTML")
+        print("salam-------------------------------")
+        print(left_panel_explicit)
+        return left_panel_explicit
