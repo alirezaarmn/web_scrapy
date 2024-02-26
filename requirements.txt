@@ -3,3 +3,4 @@ requests
 lxml
 selenium
 flask
+xhtml2pdf

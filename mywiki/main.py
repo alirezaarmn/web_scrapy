@@ -14,6 +14,7 @@ import requests
 import json
 
 from scrap_wiki import Scrapper
+from convert_to_pdf import convert_url_to_pdf
 
 app = Flask(__name__)
 
@@ -38,6 +39,7 @@ def sendWelcome(chatId, first_name):
     url = wiki_url + "/sendMessage"
     data = {'chat_id': chatId, "text": "%s!\n%s"%(first_name,txt_welcome)}
     r = requests.post(url, data=data)
+    print(r.text)
                 
 def sendMenu():   
     url = wiki_url + "/setMyCommands"
@@ -47,10 +49,23 @@ def sendMenu():
     r = requests.post(url, data=data)
     print(r.text)
 
+def sendFile(chatId):
+    url = wiki_url + "/sendPhoto"
+    data = {'chat_id': chatId, 'document': open('google.jpg', 'rb'), 'parse_mode': 'HTML'}
+    r = requests.post(url, data=data)
+    print(r.text)
+
+def sendMarkDown(chatId, md_text):
+    url = wiki_url + "/sendMessage"
+    data = {'chat_id': chatId, "text": md_text, "parse_mode":"Markdown"}
+    r = requests.post(url, data=data)
+    print(r.text)
+
 def sendHome(chatId, html_page):
     url = wiki_url + "/sendMessage"
-    data = {'chat_id': chatId, "text": "%s!\n%s"%(html_page)}
+    data = {'chat_id': chatId, "text": html.escape(html_page), "parse_mode":"HTML"}
     r = requests.post(url, data=data)
+    print(r.text)
 
 @app.route('/', methods=['POST', 'GET'])
 def index():
@@ -64,12 +79,16 @@ def index():
                 sendMenu()
                 sendWelcome(chat_id, first_name)
             if raw_json["message"]["text"] == '/h':
-                html_page = wiki_scrapper.scrapPage('/h'.lstrip('/'))
-                sendHome(chatId=chat_id, html_page=html_page)
+                html_page = "http://10.0.0.69:3000/"
+                sendMarkDown(chatId=chat_id, md_text="`Preparing PDF version of my resume ...`")
+                if convert_url_to_pdf(html_page, 'google.pdf'):
+                    print("PDF generated and saved at google.pdf")
+                    sendFile(chatId=chat_id)
+                else:
+                    print("PDF generation failed")
 
         return Response('ok', status=200)
     else:
-        return wiki_scrapper.scrapPage('/h'.lstrip('/'))
         return '<h1> My Wiki Bot</h1>'
 
 if __name__ == '__main__':

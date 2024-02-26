@@ -49,6 +49,4 @@ class Scrapper:
         url = self.categories[command][1]
         self.driver.get(url)
         left_panel_explicit = WebDriverWait(self.driver, timeout=10).until(EC.presence_of_element_located((By.XPATH, '//div[contains(@class,"contents")]'))).get_attribute("outerHTML")
-        print("salam-------------------------------")
-        print(left_panel_explicit)
         return left_panel_explicit

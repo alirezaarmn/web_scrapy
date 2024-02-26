@@ -20,5 +20,6 @@ completedColumns:
 ## In Progress
 
 - [functinallty-for-h](tasks/functinallty-for-h.md)
+- [sending-uploading-pdf-file-on-telegram-with-api](tasks/sending-uploading-pdf-file-on-telegram-with-api.md)
 
 ## Done
