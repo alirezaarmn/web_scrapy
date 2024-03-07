@@ -12,6 +12,8 @@ completedColumns:
 - [review-the-project-on-design-pattern-and-software-archetecture](tasks/review-the-project-on-design-pattern-and-software-archetecture.md)
 - [global-keyword-investigation](tasks/global-keyword-investigation.md)
 - [create-a-docker-image-for-entire-project](tasks/create-a-docker-image-for-entire-project.md)
+- [error-log-for-telegram-operation](tasks/error-log-for-telegram-operation.md)
+- [check-the-the-code-to-learn-how-clean-should-wirte-code](tasks/check-the-the-code-to-learn-how-clean-should-wirte-code.md)
 
 ## Todo
 
