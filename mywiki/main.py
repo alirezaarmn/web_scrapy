@@ -22,7 +22,7 @@ TOKEN = '6546517474:AAHBVAesenlhwFL_altk4E-dqwO6xtqh40k'
 txt_welcome = "Welcome to my personal wiki. "
 cat_commands_json = ''
 cat_dic = [] # command, {catName, address}
-wiki_url = "https://api.telegram.org/bot" + TOKEN
+token_url = "https://api.telegram.org/bot" + TOKEN
 
 def scrapWiki():
     global cat_commands_json
@@ -36,33 +36,32 @@ def scrapWiki():
     cat_commands_json = cat_commands_json.rstrip(',')
   
 def sendWelcome(chatId, first_name):
-    url = wiki_url + "/sendMessage"
+    url = token_url + "/sendMessage"
     data = {'chat_id': chatId, "text": "%s!\n%s"%(first_name,txt_welcome)}
     r = requests.post(url, data=data)
     print(r.text)
                 
 def sendMenu():   
-    url = wiki_url + "/setMyCommands"
+    url = token_url + "/setMyCommands"
     # data = {'commands': '[{"command":"h", "description":"Home"},{"command":"a", "description":"aaa"}]'}
     data = {'commands': '[%s]'%cat_commands_json}
 
     r = requests.post(url, data=data)
     print(r.text)
 
-def sendFile(chatId):
-    url = wiki_url + "/sendPhoto"
-    data = {'chat_id': chatId, 'document': open('google.jpg', 'rb'), 'parse_mode': 'HTML'}
-    r = requests.post(url, data=data)
+def sendFile(chatId, doc):
+    url = token_url + "/sendDocument?chat_id={}".format(chatId)
+    r = requests.post(url, files={'document': open(doc, 'rb')})
     print(r.text)
 
 def sendMarkDown(chatId, md_text):
-    url = wiki_url + "/sendMessage"
+    url = token_url + "/sendMessage"
     data = {'chat_id': chatId, "text": md_text, "parse_mode":"Markdown"}
     r = requests.post(url, data=data)
     print(r.text)
 
 def sendHome(chatId, html_page):
-    url = wiki_url + "/sendMessage"
+    url = token_url + "/sendMessage"
     data = {'chat_id': chatId, "text": html.escape(html_page), "parse_mode":"HTML"}
     r = requests.post(url, data=data)
     print(r.text)
@@ -81,11 +80,11 @@ def index():
             if raw_json["message"]["text"] == '/h':
                 html_page = "http://10.0.0.69:3000/"
                 sendMarkDown(chatId=chat_id, md_text="`Preparing PDF version of my resume ...`")
-                if convert_url_to_pdf(html_page, 'google.pdf'):
+                if convert_url_to_pdf(html_page, 'home.pdf'):
                     print("PDF generated and saved at google.pdf")
-                    sendFile(chatId=chat_id)
+                    sendFile(chatId=chat_id, doc='home.pdf')
                 else:
-                    print("PDF generation failed")
+                    print("PDF generation failed") #TODO: send error to user
 
         return Response('ok', status=200)
     else:
