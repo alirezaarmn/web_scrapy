@@ -28,11 +28,13 @@ class Scrapper:
         # self.matches = left_panel.find_elements(by='xpath', value=".//a")
         matches = WebDriverWait(left_panel_explicit, timeout=10).until(EC.presence_of_all_elements_located((By.XPATH, './/a')))
         self.categories = {}
+        self.contentPage = {}
     
         for item in matches:
             self.categories[item.text[0].lower()] = (item.text, item.get_attribute("href"))
 
-        # self.driver.quit()
+    def __del__(self) -> None:
+        self.driver.quit()
     
     def getCategories(self):
         """
@@ -42,11 +44,30 @@ class Scrapper:
         """
         return self.categories
     
-    def scrapPage(self, command):
+    def scrapContentPage(self, command):
         """
         Retrieve the corresponding page of the command and scrape the page.
         """
         url = self.categories[command][1]
         self.driver.get(url)
-        left_panel_explicit = WebDriverWait(self.driver, timeout=10).until(EC.presence_of_element_located((By.XPATH, '//div[contains(@class,"contents")]'))).get_attribute("outerHTML")
-        return left_panel_explicit
+        matches = WebDriverWait(self.driver, timeout=10).until(EC.presence_of_all_elements_located((By.XPATH, '//div[contains(@class,"contents")]//ul//li//a')))
+
+        self.contentPage = {}
+        for item in matches:
+            self.contentPage[item.text] = item.get_attribute("href")
+
+        return self.contentPage.keys()
+
+    def getCommandAddress(self, command):
+        """
+        Retrieve the address of command
+        """
+
+        return self.categories[command][1]
+    
+    def getContentAddress(self, contentTitle):
+        """
+        """
+        #TODO: what if contentPage elements aren't updated and it stores the previous contentPage
+
+        return self.contentPage[contentTitle]

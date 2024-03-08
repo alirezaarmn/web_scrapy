@@ -51,7 +51,24 @@ def sendMenu():
 
 def sendFile(chatId, doc):
     url = token_url + "/sendDocument?chat_id={}".format(chatId)
+    # `files=` should be there. otherwise it does work
     r = requests.post(url, files={'document': open(doc, 'rb')})
+    print(r.text)
+
+def sendButton(chatId, buttons):
+    url = token_url + "/sendMessage"
+    inline_keyboard = ''
+    
+    # Showing each button in a single row requires new array 
+    # into array e.g. use [{}] instead of {} for each button  
+    for item in buttons:
+        inline_keyboard += '[{"text": "%s", "callback_data": "%s"}],' % (item,item)
+    
+    inline_keyboard = inline_keyboard.rstrip(',')
+
+    data = {'chat_id': chatId, 'text': "Select a page:", 'parse_mode': 'HTML',
+    'reply_markup': '{"inline_keyboard": [%s]}' % (inline_keyboard)}
+    r = requests.post(url, data=data)
     print(r.text)
 
 def sendMarkDown(chatId, md_text):
@@ -70,7 +87,9 @@ def sendHome(chatId, html_page):
 def index():
     if request.method == 'POST':
         raw_json = request.get_json()
+        print("---------------------telgram data recieve-----------")
         print(raw_json)
+        print("----------end of data-----------------------\n")
         if 'message' in raw_json:
             chat_id = str(raw_json["message"]["chat"]["id"])
             first_name = str(raw_json["message"]["chat"]["first_name"])
@@ -78,13 +97,37 @@ def index():
                 sendMenu()
                 sendWelcome(chat_id, first_name)
             if raw_json["message"]["text"] == '/h':
-                html_page = "http://10.0.0.69:3000/"
                 sendMarkDown(chatId=chat_id, md_text="`Preparing PDF version of my resume ...`")
-                if convert_url_to_pdf(html_page, 'home.pdf'):
+                if convert_url_to_pdf(wiki_scrapper.getCommandAddress('h'), 'home.pdf'):
                     print("PDF generated and saved at google.pdf")
                     sendFile(chatId=chat_id, doc='home.pdf')
                 else:
                     print("PDF generation failed") #TODO: send error to user
+            if raw_json["message"]["text"] =='/d':
+                buttons = wiki_scrapper.scrapContentPage('d')
+                sendButton(chatId=chat_id, buttons=buttons)
+            if raw_json["message"]["text"] =='/g':
+                buttons = wiki_scrapper.scrapContentPage('g')
+                sendButton(chatId=chat_id, buttons=buttons)
+            if raw_json["message"]["text"] =='/l':
+                buttons = wiki_scrapper.scrapContentPage('l')
+                sendButton(chatId=chat_id, buttons=buttons)
+            if raw_json["message"]["text"] =='/r':
+                buttons = wiki_scrapper.scrapContentPage('r')
+                sendButton(chatId=chat_id, buttons=buttons)
+            if raw_json["message"]["text"] =='/i':
+                buttons = wiki_scrapper.scrapContentPage('i')
+                sendButton(chatId=chat_id, buttons=buttons)
+
+        elif 'callback_query' in raw_json:
+            chat_id = str(raw_json["callback_query"]["from"]["id"])
+            pageName = raw_json['callback_query']['data']
+            contentAddress = wiki_scrapper.getContentAddress(pageName)
+            if convert_url_to_pdf(contentAddress, '{}.pdf'.format(pageName)):
+                print("PDF generated and saved at google.pdf")
+                sendFile(chatId=chat_id, doc='{}.pdf'.format(pageName))
+            else:
+                print("PDF generation failed") #TODO: send error to user
 
         return Response('ok', status=200)
     else:
