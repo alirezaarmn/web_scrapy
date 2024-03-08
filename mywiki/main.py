@@ -2,8 +2,6 @@
 # 2. set webhook with the output of previous step
 #--- set webhook: 
 #       https://api.telegram.org/bot6546517474:AAHBVAesenlhwFL_altk4E-dqwO6xtqh40k/setWebhook?url=https://0e67e13920a0256c617b52a8b15a6eb8.serveo.net
-# TODO: having the path to the pages, find a way to save the page as pdf and send it to the telegram user(scrap the page)
-# TODO: complete the functinalty of each command and scrap the page 
 # TODO: Clean up the code and prepare it to launch on RasperryPi
 # TODO: make the ultimate code as a release 
 # TODO: make a service on Raspry and run the release code on it

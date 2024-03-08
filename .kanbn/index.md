@@ -16,8 +16,8 @@ completedColumns:
 
 ## Todo
 
-- [global-keyword-investigation](tasks/global-keyword-investigation.md)
 - [review-the-project-on-design-pattern-and-software-archetecture](tasks/review-the-project-on-design-pattern-and-software-archetecture.md)
+- [global-keyword-investigation](tasks/global-keyword-investigation.md)
 - [webscraper-is-not-quiting-correctly](tasks/webscraper-is-not-quiting-correctly.md)
 
 ## In Progress
