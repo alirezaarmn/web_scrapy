@@ -13,6 +13,7 @@ completedColumns:
 - [check-the-the-code-to-learn-how-clean-should-wirte-code](tasks/check-the-the-code-to-learn-how-clean-should-wirte-code.md)
 - [error-log-for-telegram-operation](tasks/error-log-for-telegram-operation.md)
 - [instead-of-print-make-a-logger-system-and-save-the-in-json-file](tasks/instead-of-print-make-a-logger-system-and-save-the-in-json-file.md)
+- [when-create-pdf-you-should-delete-it-form-hard-after-sending-to-telegram](tasks/when-create-pdf-you-should-delete-it-form-hard-after-sending-to-telegram.md)
 
 ## Todo
 
