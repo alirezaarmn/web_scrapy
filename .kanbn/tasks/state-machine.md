@@ -1,9 +1,10 @@
 ---
 created: 2024-03-09T17:25:54.612Z
-updated: 2024-03-10T19:56:28.642Z
+updated: 2024-03-10T20:09:37.291Z
 assigned: ""
 progress: 0
 tags: []
+started: 2024-03-10T20:09:37.291Z
 ---
 
 # State Machine

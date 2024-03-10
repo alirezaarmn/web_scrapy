@@ -10,16 +10,18 @@ completedColumns:
 ## Backlog
 
 - [create-a-docker-image-for-entire-project](tasks/create-a-docker-image-for-entire-project.md)
-- [error-log-for-telegram-operation](tasks/error-log-for-telegram-operation.md)
 - [release-this-project-to-my-public-github-acount-after-review-well-struct](tasks/release-this-project-to-my-public-github-acount-after-review-well-struct.md)
+- [when-create-pdf-you-should-delete-it-form-hard-after-sending-to-telegram](tasks/when-create-pdf-you-should-delete-it-form-hard-after-sending-to-telegram.md)
 
 ## Todo
 
 - [webscraper-is-not-quiting-correctly](tasks/webscraper-is-not-quiting-correctly.md)
-- [state-machine](tasks/state-machine.md)
 - [instead-of-print-make-a-logger-system-and-save-the-in-json-file](tasks/instead-of-print-make-a-logger-system-and-save-the-in-json-file.md)
+- [error-log-for-telegram-operation](tasks/error-log-for-telegram-operation.md)
 
 ## In Progress
+
+- [state-machine](tasks/state-machine.md)
 
 ## Done
 
