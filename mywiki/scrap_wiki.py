@@ -22,7 +22,7 @@ class Scrapper:
 
         self.driver.get(mywiki_website)
         # self.driver.maximize_window()
-        left_panel_find_element = self.driver.find_element(by='xpath', value="//div[contains(@class,'v-list py-2')]")
+        # left_panel_find_element = self.driver.find_element(by='xpath', value="//div[contains(@class,'v-list py-2')]")
         # self.left_panel = driver.find_element(by='xpath', value="//div[contains(@class,'v-list py-2')]")
         left_panel_explicit = WebDriverWait(self.driver, timeout=10).until(EC.presence_of_element_located((By.XPATH, '//div[contains(@class,"v-list py-2")]')))
         # self.matches = left_panel.find_elements(by='xpath', value=".//a")
@@ -68,6 +68,5 @@ class Scrapper:
     def getContentAddress(self, contentTitle):
         """
         """
-        #TODO: what if contentPage elements aren't updated and it stores the previous contentPage
 
         return self.contentPage[contentTitle]
