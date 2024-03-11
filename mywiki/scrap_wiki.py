@@ -48,11 +48,15 @@ class Scrapper:
         """
         Retrieve the corresponding page of the command and scrape the page.
         """
+        self.contentPage = {}
+
+        if command not in self.categories:
+            return self.contentPage;
+
         url = self.categories[command][1]
         self.driver.get(url)
         matches = WebDriverWait(self.driver, timeout=10).until(EC.presence_of_all_elements_located((By.XPATH, '//div[contains(@class,"contents")]//ul//li//a')))
 
-        self.contentPage = {}
         for item in matches:
             self.contentPage[item.text] = item.get_attribute("href")
 
@@ -62,11 +66,16 @@ class Scrapper:
         """
         Retrieve the address of command
         """
-
+        if command not in self.categories:
+            return {}
+        
         return self.categories[command][1]
     
     def getContentAddress(self, contentTitle):
         """
         """
-
-        return self.contentPage[contentTitle]
+        if contentTitle in self.contentPage:
+            return self.contentPage[contentTitle]
+        else:
+            print("Page not found.")
+            return ''

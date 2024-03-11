@@ -58,3 +58,9 @@ class TelBot:
         data = {'chat_id': chatId, "text": html.escape(html_page), "parse_mode":"HTML"}
         r = requests.post(url, data=data)
         print(r.text)
+
+    def sendError(self, chatId, error_text):
+        url = self.token_url + "/sendMessage"
+        data = {'chat_id': chatId, "text": "<b>{}</b>".format(error_text), "parse_mode":"HTML"}
+        r = requests.post(url, data=data)
+        print(r.text)

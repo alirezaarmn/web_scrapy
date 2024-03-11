@@ -33,34 +33,39 @@ def index():
         print("---------------------telgram data recieve-----------")
         print(raw_json)
         print("----------end of data-----------------------\n")
-        if 'message' in raw_json:
-            chat_id = str(raw_json["message"]["chat"]["id"])
-            first_name = str(raw_json["message"]["chat"]["first_name"])
-            if raw_json["message"]["text"] == '/start':
-                tel_bot.sendMenu(menu_list)
-                tel_bot.sendWelcome(chat_id, first_name)
-            elif raw_json["message"]["text"] == '/h':
-                tel_bot.sendMarkDown(chatId=chat_id, md_text="`Preparing PDF version of my resume ...`")
-                if convert_url_to_pdf(wiki_scrapper.getCommandAddress('h'), 'home'):
-                    print("PDF generated and saved at google.pdf")
-                    tel_bot.sendFile(chatId=chat_id, doc='home.pdf')
+        try:
+            if 'message' in raw_json:
+                chat_id = str(raw_json["message"]["chat"]["id"])
+                first_name = str(raw_json["message"]["chat"]["first_name"])
+                if raw_json["message"]["text"] == '/start':
+                    tel_bot.sendMenu(menu_list)
+                    tel_bot.sendWelcome(chat_id, first_name)
+                elif raw_json["message"]["text"] == '/h':
+                    tel_bot.sendMarkDown(chatId=chat_id, md_text="`Preparing PDF version of my resume ...`")
+                    if convert_url_to_pdf(wiki_scrapper.getCommandAddress('h'), 'home'):
+                        tel_bot.sendFile(chatId=chat_id, doc='home.pdf')
+                    else:
+                        tel_bot.sendError("PDF generation failed")
                 else:
-                    print("PDF generation failed") #TODO: send error to user
-            else:
-               command = raw_json["message"]["text"]
-               command = command.strip('/')
-               buttons = wiki_scrapper.scrapContentPage(command)
-               tel_bot.sendButton(chatId=chat_id, buttons=buttons)
-
-        elif 'callback_query' in raw_json:
-            chat_id = str(raw_json["callback_query"]["from"]["id"])
-            pageName = raw_json['callback_query']['data']
-            contentAddress = wiki_scrapper.getContentAddress(pageName)
-            if convert_url_to_pdf(contentAddress, pageName):
-                print("PDF generated and saved at google.pdf")
-                tel_bot.sendFile(chatId=chat_id, doc='{}.pdf'.format(pageName))
-            else:
-                print("PDF generation failed") #TODO: send error to user
+                    command = raw_json["message"]["text"]
+                    command = command.strip('/')
+                    buttons = wiki_scrapper.scrapContentPage(command)
+                    if not buttons:
+                        tel_bot.sendError("Invalid command")
+                    else: 
+                        tel_bot.sendButton(chatId=chat_id, buttons=buttons)
+            elif 'callback_query' in raw_json:
+                chat_id = str(raw_json["callback_query"]["from"]["id"])
+                pageName = raw_json['callback_query']['data']
+                contentAddress = wiki_scrapper.getContentAddress(pageName)
+                if contentAddress == '':
+                    tel_bot.sendError("Invalid page request, please first send a valid command")
+                if convert_url_to_pdf(contentAddress, pageName):
+                    tel_bot.sendFile(chatId=chat_id, doc='{}.pdf'.format(pageName))
+                else:
+                    tel_bot.sendError("PDF generation failed")
+        except Exception as e:
+            print("Unable to Parse JSON: " + e)
 
         return Response('ok', status=200)
     else:
