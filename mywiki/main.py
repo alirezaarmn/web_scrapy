@@ -45,13 +45,13 @@ def index():
                     if convert_url_to_pdf(wiki_scrapper.getCommandAddress('h'), 'home'):
                         tel_bot.sendFile(chatId=chat_id, doc='home.pdf')
                     else:
-                        tel_bot.sendError("PDF generation failed")
+                        tel_bot.sendError(chat_id, "PDF generation failed")
                 else:
                     command = raw_json["message"]["text"]
                     command = command.strip('/')
                     buttons = wiki_scrapper.scrapContentPage(command)
                     if not buttons:
-                        tel_bot.sendError("Invalid command")
+                        tel_bot.sendError(chat_id, "Invalid command")
                     else: 
                         tel_bot.sendButton(chatId=chat_id, buttons=buttons)
             elif 'callback_query' in raw_json:
@@ -59,13 +59,13 @@ def index():
                 pageName = raw_json['callback_query']['data']
                 contentAddress = wiki_scrapper.getContentAddress(pageName)
                 if contentAddress == '':
-                    tel_bot.sendError("Invalid page request, please first send a valid command")
+                    tel_bot.sendError(chat_id, "Invalid page request, please first send a valid command")
                 if convert_url_to_pdf(contentAddress, pageName):
                     tel_bot.sendFile(chatId=chat_id, doc='{}.pdf'.format(pageName))
                 else:
-                    tel_bot.sendError("PDF generation failed")
+                    tel_bot.sendError(chat_id, "PDF generation failed")
         except Exception as e:
-            print("Unable to Parse JSON: " + e)
+            print("Unable to Parse JSON: " + str(e))
 
         return Response('ok', status=200)
     else:
