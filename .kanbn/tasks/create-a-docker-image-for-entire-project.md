@@ -1,6 +1,6 @@
 ---
 created: 2024-02-22T07:50:26.964Z
-updated: 2024-02-22T07:55:18.992Z
+updated: 2024-03-10T23:05:13.672Z
 assigned: ""
 progress: 0
 tags:
@@ -10,6 +10,7 @@ tags:
 # Create a docker image for entire project
 
 the docker should be able to setup the ngrok and setup webhook
+MAKE IT A SERVICE(Systemctl)
 
 ## Sub-tasks
 
