@@ -21,12 +21,12 @@ completedColumns:
 ## In Progress
 
 - [instead-of-print-make-a-logger-system-and-save-the-in-json-file](tasks/instead-of-print-make-a-logger-system-and-save-the-in-json-file.md)
-- [error-log-for-telegram-operation](tasks/error-log-for-telegram-operation.md)
 
 ## Done
 
 - [functinallty-for-h](tasks/functinallty-for-h.md)
 - [state-machine](tasks/state-machine.md)
+- [error-log-for-telegram-operation](tasks/error-log-for-telegram-operation.md)
 - [check-the-the-code-to-learn-how-clean-should-wirte-code](tasks/check-the-the-code-to-learn-how-clean-should-wirte-code.md)
 - [review-the-project-on-design-pattern-and-software-archetecture](tasks/review-the-project-on-design-pattern-and-software-archetecture.md)
 - [global-keyword-investigation](tasks/global-keyword-investigation.md)

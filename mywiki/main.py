@@ -8,10 +8,12 @@ from flask import Response
 from scrap_wiki import Scrapper
 from convert_to_pdf import convert_url_to_pdf
 from tele_bot import TelBot
+from logger import Logger, LogLevel
 
 app = Flask(__name__)
 
 tel_bot = TelBot()
+logger = Logger()
 
 def scrapWiki():
     global menu_list
@@ -30,9 +32,7 @@ def index():
     
     if request.method == 'POST':
         raw_json = request.get_json()
-        print("---------------------telgram data recieve-----------")
-        print(raw_json)
-        print("----------end of data-----------------------\n")
+        # logger.log(LogLevel.DEBUG, 202, raw_json)
         try:
             if 'message' in raw_json:
                 chat_id = str(raw_json["message"]["chat"]["id"])
