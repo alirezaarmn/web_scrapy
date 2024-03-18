@@ -13,22 +13,14 @@ class LogLevel(Enum):
     CRITICAL = 5
 
 class Logger:
-    def __init__(self) -> None:
-        logging.basicConfig(level=logging.DEBUG, filename='app.log', filemode='w',
-                            format='%(name)s , %(levelname)s, %(message)s')
+    def __init__(self, filename) -> None:
+        logging.basicConfig(level=logging.DEBUG, filename=filename, filemode='w')
+        pass
 
-    def log(self, loglevel, status, raw_json):
+    def logError(self, raw_json):
+        json_object = json.dumps(jsonify(raw_json).json, indent=3)
+        logging.error(json_object)
 
-        # check the file size and save json file 
-        json_object = json.dumps(jsonify(
-                                epoc = time.time(), 
-                                loglevel = loglevel.name,
-                                status = status,
-                                message=raw_json).json, indent=3)
-
-        print(json_object)
-        # Writing to sample.json
-        # logging.info(json_object)
-        # with open("sample.json", "w") as outfile:
-        #     outfile.write(json_object)
-
+    def logDebug(self, raw_json):
+        json_object = json.dumps(jsonify(raw_json).json, indent=3)
+        logging.debug(json_object)

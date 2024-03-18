@@ -4,16 +4,18 @@
 from flask import Flask
 from flask import request
 from flask import Response
-
 from scrap_wiki import Scrapper
-from convert_to_pdf import convert_url_to_pdf
 from tele_bot import TelBot
-from logger import Logger, LogLevel
+from logger import Logger
+from xhtml2pdf import pisa
+
+import requests
+import os
 
 app = Flask(__name__)
 
 tel_bot = TelBot()
-logger = Logger()
+logger = Logger("main.log")
 
 def scrapWiki():
     global menu_list
@@ -27,12 +29,27 @@ def scrapWiki():
         menu_list += '{"command":"%s", "description":"%s"},'%(key,item[0])
     menu_list = menu_list.rstrip(',')
  
+def convert_url_to_pdf(url, file_name): 
+    # Fetch the HTML content from the URL
+    response = requests.get(url)
+    if response.status_code != 200:
+        logger.logError(f"Failed to fetch URL: {url}")
+        return False
+    
+    html_content = response.text
+    
+    # Generate PDF
+    with open("{}.pdf".format(file_name), "wb") as pdf_file:
+        pisa_status = pisa.CreatePDF(html_content, dest=pdf_file)
+        
+    return not pisa_status.err
+
 @app.route('/', methods=['POST', 'GET'])
 def index():
     
     if request.method == 'POST':
         raw_json = request.get_json()
-        # logger.log(LogLevel.DEBUG, 202, raw_json)
+        logger.logDebug(raw_json)
         try:
             if 'message' in raw_json:
                 chat_id = str(raw_json["message"]["chat"]["id"])
@@ -44,6 +61,7 @@ def index():
                     tel_bot.sendMarkDown(chatId=chat_id, md_text="`Preparing PDF version of my resume ...`")
                     if convert_url_to_pdf(wiki_scrapper.getCommandAddress('h'), 'home'):
                         tel_bot.sendFile(chatId=chat_id, doc='home.pdf')
+                        os.remove('home.pdf')
                     else:
                         tel_bot.sendError(chat_id, "PDF generation failed")
                 else:
@@ -61,11 +79,13 @@ def index():
                 if contentAddress == '':
                     tel_bot.sendError(chat_id, "Invalid page request, please first send a valid command")
                 if convert_url_to_pdf(contentAddress, pageName):
-                    tel_bot.sendFile(chatId=chat_id, doc='{}.pdf'.format(pageName))
+                    doc='{}.pdf'.format(pageName)
+                    tel_bot.sendFile(chatId=chat_id, doc=doc)
+                    os.remove(doc)
                 else:
                     tel_bot.sendError(chat_id, "PDF generation failed")
         except Exception as e:
-            print("Unable to Parse JSON: " + str(e))
+            logger.logError("Unable to Parse JSON: " + str(e))
 
         return Response('ok', status=200)
     else:
