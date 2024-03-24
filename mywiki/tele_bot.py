@@ -5,15 +5,15 @@ class TelBot:
     
     def __init__(self) -> None:
         my_token = '6546517474:AAHBVAesenlhwFL_altk4E-dqwO6xtqh40k'
-        self.txt_welcome = "Welcome to my personal wiki. "
         self.token_url = "https://api.telegram.org/bot" + my_token
-        self.logger = Logger("telbot.log")
+        self.logger = Logger("telbot", "telbot.log")
 
     def sendWelcome(self, chatId, first_name):
         url = self.token_url + "/sendMessage"
-        data = {'chat_id': chatId, "text": "%s!\n%s"%(first_name,self.txt_welcome)}
+        txt_welcome = "Welcome to my personal wiki. "
+        data = {'chat_id': chatId, "text": "%s!\n%s"%(first_name, txt_welcome)}
         r = requests.post(url, data=data)
-        self.logger.logDebug(r.text)
+        self.logger.logDebug(r.json)
                 
     def sendMenu(self, menu):   
         url = self.token_url + "/setMyCommands"
@@ -25,7 +25,7 @@ class TelBot:
 
     def sendFile(self, chatId, doc):
         url = self.token_url + "/sendDocument?chat_id={}".format(chatId)
-        # `files=` should be there. otherwise it does work
+        # `files=` should be there. otherwise it doesn't work
         r = requests.post(url, files={'document': open(doc, 'rb')})
         self.logger.logDebug(r.text)
 

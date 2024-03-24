@@ -15,7 +15,7 @@ import os
 app = Flask(__name__)
 
 tel_bot = TelBot()
-logger = Logger("main.log")
+logger = Logger("main", "main.log")
 
 def scrapWiki():
     global menu_list
