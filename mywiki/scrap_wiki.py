@@ -44,23 +44,23 @@ class Scrapper:
         """
         return self.categories
     
-    def scrapContentPage(self, command):
+    def scrapContentPage(self, chatId, command):
         """
         Retrieve the corresponding page of the command and scrape the page.
         """
-        self.contentPage = {}
+        self.contentPage[chatId] = {}
 
         if command not in self.categories:
-            return self.contentPage;
+            return self.contentPage[chatId]
 
         url = self.categories[command][1]
         self.driver.get(url)
         matches = WebDriverWait(self.driver, timeout=10).until(EC.presence_of_all_elements_located((By.XPATH, '//div[contains(@class,"contents")]//ul//li//a')))
 
         for item in matches:
-            self.contentPage[item.text] = item.get_attribute("href")
+            self.contentPage[chatId][item.text] = item.get_attribute("href")
 
-        return self.contentPage.keys()
+        return self.contentPage[chatId].keys()
 
     def getCommandAddress(self, command):
         """
@@ -71,11 +71,11 @@ class Scrapper:
         
         return self.categories[command][1]
     
-    def getContentAddress(self, contentTitle):
+    def getContentAddress(self, chatId, contentTitle):
         """
         """
         if contentTitle in self.contentPage:
-            return self.contentPage[contentTitle]
+            return self.contentPage[chatId][contentTitle]
         else:
             print("Page not found.")
             return ''

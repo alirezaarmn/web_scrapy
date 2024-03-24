@@ -67,7 +67,7 @@ def index():
                 else:
                     command = raw_json["message"]["text"]
                     command = command.strip('/')
-                    buttons = wiki_scrapper.scrapContentPage(command)
+                    buttons = wiki_scrapper.scrapContentPage(chat_id, command)
                     if not buttons:
                         tel_bot.sendError(chat_id, "Invalid command")
                     else: 
@@ -75,7 +75,7 @@ def index():
             elif 'callback_query' in raw_json:
                 chat_id = str(raw_json["callback_query"]["from"]["id"])
                 pageName = raw_json['callback_query']['data']
-                contentAddress = wiki_scrapper.getContentAddress(pageName)
+                contentAddress = wiki_scrapper.getContentAddress(chat_id, pageName)
                 if contentAddress == '':
                     tel_bot.sendError(chat_id, "Invalid page request, please first send a valid command")
                 if convert_url_to_pdf(contentAddress, pageName):
