@@ -74,7 +74,7 @@ class Scrapper:
     def getContentAddress(self, chatId, contentTitle):
         """
         """
-        if contentTitle in self.contentPage:
+        if contentTitle in self.contentPage[chatId]:
             return self.contentPage[chatId][contentTitle]
         else:
             print("Page not found.")
